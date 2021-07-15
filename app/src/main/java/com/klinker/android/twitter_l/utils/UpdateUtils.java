@@ -16,18 +16,13 @@ package com.klinker.android.twitter_l.utils;
  */
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.*;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Handler;
-import android.widget.Toast;
 
-import com.klinker.android.twitter_l.R;
-import com.klinker.android.twitter_l.activities.RateItDialog;
 import com.klinker.android.twitter_l.data.sq_lite.QueuedDataSource;
 import com.klinker.android.twitter_l.settings.AppSettings;
+import com.sensortower.PromptOptions;
 import com.sensortower.rating.RatingPrompt;
 
 import java.util.Calendar;
@@ -47,9 +42,13 @@ public class UpdateUtils {
     public static void checkUpdate(final Activity context) {
         SharedPreferences sharedPrefs = AppSettings.getSharedPreferences(context);
 
-        RatingPrompt.show(context);
-
         boolean justInstalled = runFirstInstalled(sharedPrefs);
+
+        RatingPrompt.show(context,
+                new PromptOptions.Builder("Talon")
+                        .accentColor(AppSettings.getInstance(context).themeColors.primaryColor)
+                        .darkTheme(AppSettings.getInstance(context).darkTheme)
+                        .build());
 
         if (!justInstalled) {
             // version specific things
